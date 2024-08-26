@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button'
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
 import {MatGridListModule} from '@angular/material/grid-list'
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition,} from '@angular/material/snack-bar';
 
 import { ComicService } from '../../../services/comic.service'
 import { Comic } from '../../../interfaces/Comic'
@@ -19,7 +20,10 @@ import { NgIf } from '@angular/common'
   styleUrl: './comic_detail.component.css'
 })
 export default class ComicDetailComponent implements OnInit {
-    
+    private _snackBar = inject(MatSnackBar)
+    horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
+
     private comicService = inject(ComicService)
     comic: Comic = {
         id: '',
@@ -61,13 +65,13 @@ export default class ComicDetailComponent implements OnInit {
                     this.activeSpinner = false
                   }
                   else{
-                    alert("Error al obtener los datos.")
+                    this.showSnackBar("Error al obtener los datos.")
                     this.activeSpinner = false
                   }
              },
              error: (err) => {
-                  alert(err.error.returnMessage)
-                  this.activeSpinner = false
+                this.showSnackBar(err.error.returnMessage)
+                this.activeSpinner = false
              }
         })
    }
@@ -90,4 +94,9 @@ export default class ComicDetailComponent implements OnInit {
             }
         });
    }
+
+   showSnackBar(msj: string){
+    this._snackBar.open(msj, "Ok", {horizontalPosition: this.horizontalPosition,
+         verticalPosition: this.verticalPosition,duration: 3000})
+}
 }

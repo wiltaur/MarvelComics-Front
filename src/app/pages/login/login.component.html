@@ -8,10 +8,16 @@
                     <mat-form-field class="input-custom">
                          <mat-label>Correo</mat-label>
                          <input matInput formControlName="correo" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" required>
+                         <mat-error *ngIf="formLogin.get('correo')?.hasError('required') || formLogin.get('correo')?.hasError('pattern')">
+                              Campo requerido, Ej: marvel&#64;mail.com
+                         </mat-error>
                     </mat-form-field>
                     <mat-form-field class="input-custom">
                          <mat-label>Clave</mat-label>
                          <input matInput formControlName="clave" type="password">
+                         <mat-error *ngIf="formLogin.get('clave')?.hasError('required')">
+                              Campo requerido
+                         </mat-error>
                     </mat-form-field>
                     <div class="flex">
                          <button mat-flat-button color="primary" (click)="startSession()">Iniciar Sesión</button>

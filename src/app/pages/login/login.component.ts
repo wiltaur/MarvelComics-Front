@@ -8,11 +8,14 @@ import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition,} from '@angular/material/snack-bar';
+
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatCardModule,MatFormFieldModule,MatInputModule,MatButtonModule,ReactiveFormsModule],
+  imports: [MatCardModule,MatFormFieldModule,MatInputModule,MatButtonModule,ReactiveFormsModule, NgIf],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -21,6 +24,9 @@ export class LoginComponent {
      private accesoService = inject(AccessService);
      private router = inject(Router);
      public formBuild = inject(FormBuilder);
+     private _snackBar = inject(MatSnackBar)
+     horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+     verticalPosition: MatSnackBarVerticalPosition = 'top';
 
      public formLogin: FormGroup = this.formBuild.group({
           correo: ['',Validators.required],
@@ -41,16 +47,21 @@ export class LoginComponent {
                          localStorage.setItem("token",data.data)
                          this.router.navigate(['inicio'])
                     }else{
-                         alert("Credenciales son incorrectas")
+                         this.showSnackBar("Credenciales son incorrectas")
                     }
                },
                error:(error) =>{
-                    alert(error.error.returnMessage)
+                    this.showSnackBar(error.error.returnMessage)
                }
           })
      }
 
      goRegister(){
           this.router.navigate(['registro'])
+     }
+
+     showSnackBar(msj: string){
+          this._snackBar.open(msj, "Ok", {horizontalPosition: this.horizontalPosition,
+               verticalPosition: this.verticalPosition,duration: 3000})
      }
 }
