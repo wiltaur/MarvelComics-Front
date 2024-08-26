@@ -1,0 +1,15 @@
+.card-container {
+     margin:auto;
+     margin-top: 100px;
+     width: 70%;
+}
+
+.text-inside-grid {
+     position: absolute;
+     left: 5px;
+   }
+
+.responsive {
+     width: 100%;
+     height: auto;
+}

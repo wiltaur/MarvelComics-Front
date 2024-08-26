@@ -1,0 +1,62 @@
+<div class="card-container">
+     <mat-card>
+          <div class="flex">
+               <button mat-flat-button color="warn" disabled style="margin-left:8px">Inicio</button>
+               <button mat-flat-button color="warn" routerLink="/favorito" style="margin-left:8px">Mis favoritos</button>
+          </div>    
+          <mat-card-header>
+               <mat-card-title>Lista de Comics&nbsp;</mat-card-title>
+               <div class="loading-indicator">
+                    <mat-spinner *ngIf="activeSpinner"
+                         [strokeWidth] = "3"
+                         [diameter]="40">
+                    </mat-spinner>
+               </div>
+          </mat-card-header>
+          <mat-card-content>
+               <mat-paginator *ngIf="activePaginator" #paginator
+                    class="demo-paginator"
+                    (page)="handlePageEvent($event)"
+                    [length]="length"
+                    [pageSize]="pageSize"
+                    [disabled]="disabled"
+                    [showFirstLastButtons]="showFirstLastButtons"
+                    [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+                    [hidePageSize]="hidePageSize"
+                    [pageIndex]="pageIndex"
+                    aria-label="Select page">
+               </mat-paginator>
+               <table mat-table [dataSource]="comics" class="mat-elevation-z8">
+                    <ng-container matColumnDef="image">
+                         <th mat-header-cell *matHeaderCellDef></th>
+                         <td mat-cell *matCellDef="let element"> <img mat-card-md-image src="{{element.image}}" alt="{{element.title}}"> </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="title">
+                         <th mat-header-cell *matHeaderCellDef> Título </th>
+                         <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="description">
+                         <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                         <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                         <th mat-header-cell *matHeaderCellDef> </th>
+                         <td mat-cell *matCellDef="let element">
+                              <button mat-mini-fab matTooltip="Add a favoritos" aria-label="Add a favoritos" color="primary" (click)="addFavorite(element)">
+                                   <mat-icon>favorite</mat-icon>
+                              </button>&nbsp;
+                              <button mat-mini-fab matTooltip="Ver detalle" aria-label="Ver detalle" color="primary" routerLink="../comic-detail/{{element.id}}">
+                                   <mat-icon>info</mat-icon>
+                              </button>
+                         </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+               </table>
+          </mat-card-content>
+     </mat-card>
+</div>

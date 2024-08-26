@@ -1,0 +1,48 @@
+<div class="card-container">
+     <mat-card>
+          <mat-card-header>
+               <mat-card-title>Registrarse</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+               <br>
+               <form class="form-custom" [formGroup]="formRegistro">
+                    <mat-form-field appearance="outline">
+                         <mat-label>Tipo Identificación</mat-label>
+                         <mat-select formControlName="tipoIdentificacion" [(value)]="selectedIdType">
+                           <mat-option *ngFor="let idType of idTypes" [value]="idType">{{
+                              idType?.name
+                           }}</mat-option>
+                         </mat-select>
+                         <mat-error *ngIf="formRegistro.get('tipoIdentificacion')?.hasError('required')">
+                              Seleccione una opción
+                         </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="input-custom">
+                         <mat-label>Identificación</mat-label>
+                         <input matInput formControlName="identificacion">
+                    </mat-form-field>
+                    <mat-form-field class="input-custom">
+                         <mat-label>Nombre</mat-label>
+                         <input matInput formControlName="nombre">
+                    </mat-form-field>
+                    <mat-form-field class="input-custom">
+                         <mat-label>Correo</mat-label>
+                         <input matInput formControlName="correo" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" required>
+                    </mat-form-field>
+                    <mat-form-field class="input-custom">
+                         <mat-label>Clave</mat-label>
+                         <input matInput formControlName="clave" type="password">
+                    </mat-form-field>
+                    <div class="flex">
+                         <button mat-flat-button 
+                         color="primary" 
+                         (click)="register()">Registrarse</button>
+                         <button mat-flat-button color="warn" 
+                         (click)="goBack()" 
+                         style="margin-left:8px">Volver</button>
+                    </div>
+               </form>
+          </mat-card-content>
+     </mat-card>
+
+</div>
