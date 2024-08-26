@@ -1,0 +1,70 @@
+<div class="card-container">
+     <div class="flex">
+          <button mat-flat-button color="warn" routerLink="/inicio" style="margin-left:8px">Inicio</button>
+          <button mat-flat-button color="warn" routerLink="/favorito" style="margin-left:8px">Mis favoritos</button>
+     </div>
+     <div class="loading-indicator">
+          <mat-spinner *ngIf="activeSpinner"
+               [strokeWidth] = "3"
+               [diameter]="40">
+          </mat-spinner>
+     </div>
+     <mat-card *ngIf="isUploaded">
+          <mat-card-header>
+               <mat-card-title>{{comic.title}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+               <mat-grid-list cols="3" rowHeight="5:1">
+                    <mat-grid-tile
+                         [rowspan]="7">
+                         <img src="{{comic.image}}" alt="{{comic.title}}" class="responsive">
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                         <div class="text-inside-grid">
+                              <mat-label><strong>Fecha de Publicación:&nbsp;</strong></mat-label>
+                              <br>
+                              {{comic.publishDate}}
+                         </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                         <div class="text-inside-grid">
+                              <mat-label><strong>Precio de impresión:&nbsp;</strong></mat-label>
+                              <br>
+                              $&nbsp;{{comic.printPrice}}
+                         </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                         <div class="text-inside-grid">
+                              <mat-label><strong>Escritor:&nbsp;</strong></mat-label>
+                              <br>
+                              {{writer === '' ? '# N/A' : writer}}
+                         </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                         <div class="text-inside-grid">
+                              <mat-label><strong>Editor:&nbsp;</strong></mat-label>
+                              <br>
+                              {{editor === '' ? '# N/A' : editor}}
+                         </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile
+                         [colspan]="2">
+                         <div class="text-inside-grid">
+                              <mat-label><strong>Dibujante:&nbsp;</strong></mat-label>
+                              <br>
+                              {{penciler === '' ? '# N/A' : penciler}}
+                         </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile
+                         [colspan]="2"
+                         [rowspan]="4">
+                         <div class="text-inside-grid">
+                              <mat-label><strong>Descripción:&nbsp;</strong></mat-label>
+                              <br>
+                              {{comic.description === '' ? '# N/A' : comic.description}}
+                         </div>
+                    </mat-grid-tile>
+               </mat-grid-list>
+          </mat-card-content>
+     </mat-card>
+</div>
