@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button'
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
 import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition,} from '@angular/material/snack-bar';
 
 import { ComicService } from '../../services/comic.service';
 import { Comic } from '../../interfaces/Comic';
@@ -26,6 +27,10 @@ export class ComicComponent {
 
 
      private comicService = inject(ComicService)
+     private _snackBar = inject(MatSnackBar)
+     horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+     verticalPosition: MatSnackBarVerticalPosition = 'top';
+
      comics: Comic[] = []
      displayedColumns: string[] = ['image', 'title', 'description', 'actions']
      activeSpinner : boolean = true
@@ -59,12 +64,12 @@ export class ComicComponent {
                          this.activePaginator = true
                     }
                     else{
-                         alert("Error al obtener los datos.")
+                         this.showSnackBar("Error al obtener los datos.")
                          this.activeSpinner = false
                     }
                },
                error: (err) => {
-                    alert(err.error.returnMessage)
+                    this.showSnackBar(err.error.returnMessage)
                     this.activeSpinner = false
                }
           })
@@ -80,14 +85,19 @@ export class ComicComponent {
           this.comicService.addFavoriteComic(comic).subscribe({
                next: (data) =>{
                     if(data.isSuccess){
-                         alert(data.returnMessage)
+                         this.showSnackBar(data.returnMessage)
                     }else{
-                         alert("No se pudo guardar el comic en favoritos.")
+                         this.showSnackBar("No se pudo guardar el comic en favoritos.")
                     }
                },
                error:(error) =>{
-                    alert("Ya está en la lista de favoritos. Detalle: "+error.error.returnMessage)
+                    this.showSnackBar("Ya está en la lista de favoritos. Detalle: "+error.error.returnMessage)
                }
           })
+     }
+
+     showSnackBar(msj: string){
+          this._snackBar.open(msj, "Ok", {horizontalPosition: this.horizontalPosition,
+               verticalPosition: this.verticalPosition,duration: 3000})
      }
 }

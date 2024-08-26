@@ -4,6 +4,7 @@ import { AccessService } from '../../services/access.service';
 import { Router } from '@angular/router';
 import { User } from '../../interfaces/User';
 
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition,} from '@angular/material/snack-bar';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -23,6 +24,9 @@ export class RegisterComponent {
 
      idTypes: IdType[] = []
      private accesoService = inject(AccessService)
+     private _snackBar = inject(MatSnackBar)
+     horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+     verticalPosition: MatSnackBarVerticalPosition = 'top';
 
      constructor() {
           this.accesoService.getIdTypes().subscribe({
@@ -31,8 +35,8 @@ export class RegisterComponent {
                          this.idTypes = data.data
                     }
                },
-               error: (err) => {
-                    alert(err.error.returnMessage)
+               error: (error) => {
+                    this.showSnackBar(error.error.returnMessage)
                }
           })
      }
@@ -69,16 +73,21 @@ export class RegisterComponent {
           this.accesoService.registerUser(objeto).subscribe({
                next: (data) =>{
                     if(data.isSuccess){
-                         alert(data.returnMessage)
+                         this.showSnackBar(data.returnMessage)
                          this.router.navigate([''])
                     }else{
-                         alert("No se pudo registrar")
+                         this.showSnackBar("No se pudo registrar")
                     }
                },
                error:(error) =>{
-                    alert(error.error.returnMessage)
+                    this.showSnackBar(error.error.returnMessage)
                }
           })
+     }
+
+     showSnackBar(msj: string){
+          this._snackBar.open(msj, "Ok", {horizontalPosition: this.horizontalPosition,
+               verticalPosition: this.verticalPosition,duration: 3000})
      }
 
      goBack(){

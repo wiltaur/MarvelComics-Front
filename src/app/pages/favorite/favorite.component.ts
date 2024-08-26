@@ -5,8 +5,9 @@ import { MatTableModule, MatTableDataSource } from '@angular/material/table'
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button'
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
-import {PageEvent, MatPaginatorModule, MatPaginator} from '@angular/material/paginator';
+import {MatPaginatorModule, MatPaginator} from '@angular/material/paginator';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition,} from '@angular/material/snack-bar';
 
 import { ComicService } from '../../services/comic.service';
 import { Comic } from '../../interfaces/Comic';
@@ -26,6 +27,9 @@ export class FavoriteComponent implements AfterViewInit {
 
      private comicService = inject(ComicService)
      private router = inject(Router)
+     private _snackBar = inject(MatSnackBar)
+     horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+     verticalPosition: MatSnackBarVerticalPosition = 'top';
 
      comics: Comic[] = []
      displayedColumns: string[] = ['image', 'title', 'description', 'actions']
@@ -36,18 +40,6 @@ export class FavoriteComponent implements AfterViewInit {
      constructor() {
           this.geFavoriteComics()
      }
-
-     // length = 0;
-     // pageSize = 0;
-     // pageIndex = 0;
-     // pageSizeOptions = [5, 10, 15];
-   
-     // hidePageSize = false;
-     // showPageSizeOptions = true;
-     // showFirstLastButtons = true;
-     // disabled = false;
-   
-     // pageEvent?: PageEvent;
 
      geFavoriteComics(){
           this.activeSpinner = true
@@ -61,11 +53,11 @@ export class FavoriteComponent implements AfterViewInit {
                          this.dataSource.paginator = this.paginator;
                     }
                     else{
-                         alert("Error al obtener los datos.")
+                         this.showSnackBar("Error al obtener los datos.")
                     }
                },
-               error: (err) => {
-                    alert(err.error.returnMessage)
+               error: (error) => {
+                    this.showSnackBar(error.error.returnMessage)
                }
           })
      }
@@ -79,5 +71,10 @@ export class FavoriteComponent implements AfterViewInit {
 
      ngAfterViewInit() {
           this.dataSource.paginator = this.paginator;
+     }
+
+     showSnackBar(msj: string){
+          this._snackBar.open(msj, "Ok", {horizontalPosition: this.horizontalPosition,
+               verticalPosition: this.verticalPosition,duration: 3000})
      }
 }
